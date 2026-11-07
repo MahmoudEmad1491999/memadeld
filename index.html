@@ -1,0 +1,397 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101713">
+  <meta name="description" content="Portfolio of Mahmoud Emad-Eldeen, Embedded Software Engineer focused on embedded C, firmware, systems programming and developer tooling.">
+  <title>Mahmoud Emad-Eldeen | Embedded Software Engineer</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #101713;
+      --bg-soft: #151f1a;
+      --panel: #19241e;
+      --panel-2: #1e2b24;
+      --line: #304137;
+      --text: #edf3ed;
+      --muted: #a8b7ad;
+      --soft: #7f9286;
+      --accent: #b6e3a4;
+      --accent-2: #e6c98b;
+      --blue: #9fc4d6;
+      --radius: 18px;
+      --max: 1120px;
+      --mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      --sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background:
+        radial-gradient(ellipse at 88% 4%, rgba(103, 149, 112, .13), transparent 35rem),
+        radial-gradient(ellipse at 5% 28%, rgba(159, 196, 214, .07), transparent 32rem),
+        var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      line-height: 1.65;
+    }
+    a { color: inherit; text-decoration: none; }
+    a:hover { color: var(--accent); }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    .wrap { width: min(var(--max), calc(100% - 44px)); margin-inline: auto; }
+    .topbar {
+      position: sticky; top: 0; z-index: 20;
+      border-bottom: 1px solid rgba(72, 94, 79, .55);
+      background: rgba(16, 23, 19, .86);
+      backdrop-filter: blur(16px);
+    }
+    .nav { min-height: 72px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+    .brand { display: inline-flex; align-items: center; gap: 12px; font-weight: 700; letter-spacing: -.02em; }
+    .brand-mark {
+      display: grid; place-items: center; width: 34px; height: 34px; border-radius: 10px;
+      color: var(--bg); background: var(--accent); font: 700 15px var(--mono);
+    }
+    .navlinks { display: flex; align-items: center; gap: 25px; color: var(--muted); font-size: .9rem; }
+    .navlinks a { transition: color .2s ease; }
+    .navlinks .nav-cta { color: var(--accent); border: 1px solid #66805f; border-radius: 999px; padding: 8px 14px; }
+    .hero { padding: 94px 0 84px; }
+    .hero-grid { display: grid; grid-template-columns: 1.18fr .82fr; align-items: center; gap: 64px; }
+    .eyebrow { color: var(--accent); text-transform: uppercase; letter-spacing: .16em; font: 600 .76rem var(--mono); }
+    h1 { margin: 18px 0 18px; max-width: 760px; font-size: clamp(2.65rem, 6vw, 5rem); line-height: 1.04; letter-spacing: -.065em; }
+    h1 span { color: var(--accent); }
+    .hero-lead { max-width: 660px; color: #c3cec6; font-size: clamp(1.06rem, 1.8vw, 1.22rem); line-height: 1.75; }
+    .hero-meta { display: flex; flex-wrap: wrap; gap: 10px 18px; margin: 25px 0 30px; color: var(--muted); font-size: .92rem; }
+    .hero-meta span { display: inline-flex; align-items: center; gap: 8px; }
+    .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 4px rgba(182, 227, 164, .1); }
+    .actions { display: flex; flex-wrap: wrap; gap: 12px; }
+    .btn { display: inline-flex; gap: 10px; align-items: center; justify-content: center; padding: 12px 18px; border: 1px solid var(--line); border-radius: 10px; font-weight: 650; font-size: .94rem; transition: transform .2s, border-color .2s, background .2s; }
+    .btn:hover { transform: translateY(-2px); border-color: var(--accent); color: var(--text); }
+    .btn-primary { color: #101713; background: var(--accent); border-color: var(--accent); }
+    .btn-primary:hover { color: #101713; background: #c8efb8; }
+    .btn svg { width: 16px; height: 16px; }
+    .terminal {
+      position: relative; overflow: hidden; border: 1px solid #3a5143; border-radius: 18px;
+      background: linear-gradient(145deg, rgba(31, 47, 38, .98), rgba(19, 29, 23, .98));
+      box-shadow: 0 24px 70px rgba(0,0,0,.25);
+    }
+    .terminal::after { content: ""; position: absolute; width: 190px; height: 190px; border: 1px solid rgba(182,227,164,.18); border-radius: 50%; right: -85px; bottom: -105px; box-shadow: 0 0 0 22px rgba(182,227,164,.035), 0 0 0 45px rgba(182,227,164,.025); }
+    .terminal-head { display: flex; align-items: center; gap: 7px; padding: 15px 18px; border-bottom: 1px solid #35483b; color: var(--soft); font: .75rem var(--mono); }
+    .window-dot { width: 8px; height: 8px; border-radius: 50%; background: #65786b; }
+    .terminal-body { padding: 23px 24px 25px; font: .87rem/1.9 var(--mono); position: relative; z-index: 1; }
+    .prompt { color: var(--accent); }
+    .terminal-muted { color: var(--soft); }
+    .terminal-value { color: #dce9df; }
+    .terminal-rule { height: 1px; background: #34483a; margin: 18px 0; }
+    .terminal-stack { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; margin-top: 16px; }
+    .stack-item { border: 1px solid #3d5144; background: rgba(255,255,255,.025); border-radius: 8px; padding: 8px 10px; color: #ccdbd0; font-size: .77rem; }
+    .section { padding: 76px 0; border-top: 1px solid rgba(72,94,79,.38); }
+    .section-head { display: flex; align-items: end; justify-content: space-between; gap: 22px; margin-bottom: 30px; }
+    .section-kicker { color: var(--accent); font: 600 .74rem var(--mono); letter-spacing: .13em; text-transform: uppercase; }
+    h2 { margin: 8px 0 0; font-size: clamp(1.8rem, 4vw, 2.65rem); line-height: 1.15; letter-spacing: -.045em; }
+    .section-intro { max-width: 560px; color: var(--muted); margin: 0; }
+    .about-grid { display: grid; grid-template-columns: 1.1fr .9fr; gap: 48px; }
+    .about-copy p { color: #c2cec5; margin: 0 0 17px; }
+    .about-copy strong { color: var(--text); font-weight: 650; }
+    .facts { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .fact { padding: 17px; border: 1px solid var(--line); border-radius: 13px; background: rgba(25,36,30,.7); }
+    .fact-label { color: var(--soft); text-transform: uppercase; letter-spacing: .1em; font: .68rem var(--mono); }
+    .fact-value { margin-top: 7px; font-size: .96rem; font-weight: 600; }
+    .skills-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .skill-card { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 20px; }
+    .skill-card h3 { margin: 0 0 10px; font-size: 1rem; }
+    .skill-card p { margin: 0; color: var(--muted); font-size: .91rem; }
+    .skill-label { display: block; margin-bottom: 13px; color: var(--accent); font: .7rem var(--mono); letter-spacing: .1em; text-transform: uppercase; }
+    .project-list { display: grid; gap: 18px; }
+    .project { border: 1px solid var(--line); background: linear-gradient(140deg, rgba(25,36,30,.94), rgba(21,31,26,.94)); border-radius: var(--radius); overflow: hidden; }
+    .project-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; padding: 25px 27px 0; }
+    .project-num { color: var(--accent); font: .8rem var(--mono); letter-spacing: .08em; }
+    .status { white-space: nowrap; color: var(--accent-2); border: 1px solid rgba(230,201,139,.4); border-radius: 999px; padding: 5px 10px; font: .7rem var(--mono); }
+    .project-body { display: grid; grid-template-columns: 1.05fr .95fr; gap: 30px; padding: 12px 27px 26px; }
+    .project h3 { margin: 7px 0 10px; font-size: clamp(1.35rem, 2.8vw, 1.8rem); letter-spacing: -.035em; }
+    .project-desc { color: #c2cec5; margin: 0 0 17px; }
+    .tags { display: flex; flex-wrap: wrap; gap: 7px; }
+    .tag { color: #c4d2c9; border: 1px solid #3a4b40; border-radius: 6px; padding: 4px 8px; font: .71rem var(--mono); background: rgba(255,255,255,.018); }
+    .project-detail { border-left: 1px solid #3a4b40; padding-left: 25px; }
+    .detail-title { color: var(--soft); font: .7rem var(--mono); letter-spacing: .1em; text-transform: uppercase; margin: 3px 0 8px; }
+    .project-detail ul { margin: 0 0 15px; padding-left: 17px; color: #c0cdc4; font-size: .9rem; }
+    .project-detail li { margin: 5px 0; }
+    .project-links { display: flex; flex-wrap: wrap; gap: 15px; margin-top: 14px; font-size: .87rem; font-weight: 650; }
+    .project-links a { color: var(--accent); }
+    .project-note { border-top: 1px solid #34463a; padding: 12px 27px 15px; color: var(--muted); font-size: .83rem; background: rgba(0,0,0,.11); }
+    .project-note strong { color: var(--accent-2); font-weight: 600; }
+    .experience { display: grid; grid-template-columns: 240px 1fr; gap: 32px; padding: 25px; border: 1px solid var(--line); border-radius: 15px; background: var(--panel); }
+    .experience-date { color: var(--accent); font: .8rem var(--mono); }
+    .experience h3 { margin: 3px 0 4px; font-size: 1.15rem; }
+    .experience-org { color: var(--muted); }
+    .experience p { color: #c3cec6; margin: 0 0 12px; }
+    .experience ul { margin: 0; padding-left: 18px; color: #c3cec6; font-size: .92rem; }
+    .experience li { margin: 5px 0; }
+    .closing { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 28px; border: 1px solid #536c58; border-radius: 18px; padding: 30px; background: linear-gradient(120deg, rgba(182,227,164,.1), rgba(25,36,30,.75)); }
+    .closing h2 { margin: 5px 0 9px; }
+    .closing p { margin: 0; max-width: 650px; color: var(--muted); }
+    footer { padding: 26px 0 38px; color: var(--soft); font-size: .82rem; }
+    .footer-inner { display: flex; justify-content: space-between; gap: 20px; border-top: 1px solid rgba(72,94,79,.38); padding-top: 22px; }
+    .footer-links { display: flex; gap: 18px; }
+    .small-note { color: var(--soft); font-size: .8rem; }
+    @media (max-width: 860px) {
+      .hero-grid, .about-grid, .project-body { grid-template-columns: 1fr; }
+      .hero-grid { gap: 40px; }
+      .terminal { max-width: 560px; }
+      .skills-grid { grid-template-columns: 1fr 1fr; }
+      .project-detail { border-left: 0; border-top: 1px solid #3a4b40; padding: 18px 0 0; }
+    }
+    @media (max-width: 640px) {
+      .wrap { width: min(100% - 30px, var(--max)); }
+      .nav { min-height: 62px; }
+      .navlinks { gap: 13px; font-size: .78rem; }
+      .navlinks a:nth-child(1), .navlinks a:nth-child(2) { display: none; }
+      .navlinks .nav-cta { padding: 6px 10px; }
+      .hero { padding: 64px 0 58px; }
+      .section { padding: 58px 0; }
+      .section-head { display: block; }
+      .section-intro { margin-top: 12px; }
+      .skills-grid { grid-template-columns: 1fr; }
+      .facts { grid-template-columns: 1fr 1fr; }
+      .project-top { padding: 20px 18px 0; }
+      .project-body { padding: 10px 18px 21px; }
+      .project-note { padding-inline: 18px; }
+      .experience { grid-template-columns: 1fr; gap: 12px; padding: 20px; }
+      .closing { grid-template-columns: 1fr; padding: 23px; }
+      .footer-inner { flex-direction: column; }
+    }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { transition: none !important; } }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap nav">
+      <a class="brand" href="#top" aria-label="Mahmoud Emad-Eldeen home">
+        <span class="brand-mark">ME</span><span>Mahmoud Emad-Eldeen</span>
+      </a>
+      <nav class="navlinks" aria-label="Main navigation">
+        <a href="#about">About</a>
+        <a href="#focus">Focus</a>
+        <a href="#projects">Projects</a>
+        <a href="#experience">Experience</a>
+        <a class="nav-cta" href="#contact">Get in touch ↗</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div>
+          <div class="eyebrow">Embedded software · Firmware · Systems</div>
+          <h1>Building software<br>closer to the <span>machine.</span></h1>
+          <p class="hero-lead">I'm Mahmoud, an Embedded Software Engineer at Valeo with 3+ years of experience in automotive embedded systems. Outside my day job, I build low-level software projects around microcontrollers, toolchains, and portable C libraries.</p>
+          <div class="hero-meta">
+            <span><i class="dot"></i> Based in Egypt</span>
+            <span>Open to relocation to Germany</span>
+            <span>English-first work environments</span>
+          </div>
+          <div class="actions">
+            <a class="btn btn-primary" href="#projects">Explore selected projects <span>↓</span></a>
+            <a class="btn" href="https://github.com/MahmoudEmad1491999" target="_blank" rel="noopener">GitHub profile ↗</a>
+          </div>
+        </div>
+        <aside class="terminal" aria-label="Technical profile summary">
+          <div class="terminal-head"><i class="window-dot"></i><i class="window-dot"></i><i class="window-dot"></i><span style="margin-left:8px">mahmoud — profile</span></div>
+          <div class="terminal-body">
+            <div><span class="prompt">$</span> whoami</div>
+            <div class="terminal-value">Embedded Software Engineer</div>
+            <div class="terminal-muted">automotive · firmware · systems</div>
+            <div class="terminal-rule"></div>
+            <div><span class="prompt">$</span> current_interests --list</div>
+            <div class="terminal-value">01  Low-level C / firmware</div>
+            <div class="terminal-value">02  Compilers & toolchains</div>
+            <div class="terminal-value">03  Operating systems & system software</div>
+            <div class="terminal-value">04  Verification & dependable software</div>
+            <div class="terminal-rule"></div>
+            <div class="terminal-muted">Selected project stack</div>
+            <div class="terminal-stack">
+              <div class="stack-item">C / C11</div><div class="stack-item">Python</div>
+              <div class="stack-item">ARM Cortex-M</div><div class="stack-item">RISC-V / ELF</div>
+              <div class="stack-item">CMake / GCC</div><div class="stack-item">QEMU</div>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section" id="about">
+      <div class="wrap">
+        <div class="section-head">
+          <div><div class="section-kicker">01 / About</div><h2>Engineering across layers</h2></div>
+          <p class="section-intro">Professional embedded engineering, complemented by personal projects that explore how software works beneath the application layer.</p>
+        </div>
+        <div class="about-grid">
+          <div class="about-copy">
+            <p>In my professional role at <strong>Valeo</strong>, I work with automotive embedded software, including AUTOSAR Basic Software verification, reusable test packages, software integration, and Python-based automation.</p>
+            <p>My personal work gives me room to go deeper: writing firmware close to the hardware, implementing parts of a compiler and linker toolchain, and designing reusable C components with explicit ownership and error-handling contracts.</p>
+            <p>I enjoy understanding the complete path from source code to executable behavior: memory layout, startup, instruction sets, toolchains, runtime behavior, and testing.</p>
+          </div>
+          <div class="facts" aria-label="Profile details">
+            <div class="fact"><div class="fact-label">Professional experience</div><div class="fact-value">3+ years · Embedded</div></div>
+            <div class="fact"><div class="fact-label">Current domain</div><div class="fact-value">Automotive systems</div></div>
+            <div class="fact"><div class="fact-label">Primary languages</div><div class="fact-value">C · Python</div></div>
+            <div class="fact"><div class="fact-label">Education</div><div class="fact-value">B.Sc. Computer Engineering</div></div>
+            <div class="fact"><div class="fact-label">Location</div><div class="fact-value">Egypt · Relocation-ready</div></div>
+            <div class="fact"><div class="fact-label">German</div><div class="fact-value">Self-learning · Certification goal 2027</div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="focus">
+      <div class="wrap">
+        <div class="section-head">
+          <div><div class="section-kicker">02 / Technical focus</div><h2>Areas I work in</h2></div>
+          <p class="section-intro">A mix of production experience and hands-on personal development. The project cards below show where I have applied these concepts.</p>
+        </div>
+        <div class="skills-grid">
+          <article class="skill-card"><span class="skill-label">01 · Embedded</span><h3>Firmware & microcontrollers</h3><p>Embedded C, register-level programming, startup code, linker scripts, ARM Cortex-M, hardware debugging and peripheral-oriented development.</p></article>
+          <article class="skill-card"><span class="skill-label">02 · Systems</span><h3>Toolchains & system software</h3><p>GCC, GNU binutils, ELF, RISC-V, cross-compilation, CMake, Make, executable layout and compiler/toolchain architecture.</p></article>
+          <article class="skill-card"><span class="skill-label">03 · Quality</span><h3>Testing & software reliability</h3><p>Python automation, software verification, unit tests, sanitizers, static analysis, differential testing and failure-path validation.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="projects">
+      <div class="wrap">
+        <div class="section-head">
+          <div><div class="section-kicker">03 / Selected work</div><h2>Projects in progress</h2></div>
+          <p class="section-intro">These are active personal projects, not finished products. The summaries distinguish what the repositories currently document from what remains on their roadmaps.</p>
+        </div>
+        <div class="project-list">
+          <article class="project">
+            <div class="project-top"><div class="project-num">PROJECT 01 / TOOLCHAIN & LANGUAGE</div><span class="status">ACTIVE · WIP</span></div>
+            <div class="project-body">
+              <div>
+                <h3>Arabic RISC-V Toolchain</h3>
+                <p class="project-desc">An Arabic-source toolchain for RISC-V: assembler, linker, and an emerging programming language called <b>غرة (Ghora)</b>. The project explores compiler construction, object files, executable layout, and a development workflow designed around Arabic source code.</p>
+                <div class="tags"><span class="tag">C11</span><span class="tag">RISC-V RV64IM</span><span class="tag">ELF64</span><span class="tag">Compiler design</span><span class="tag">GNU binutils</span><span class="tag">QEMU</span><span class="tag">Differential testing</span></div>
+                <div class="project-links"><a href="https://github.com/MahmoudEmad1491999/arabic-riscv-toolchain" target="_blank" rel="noopener">Repository ↗</a><a href="https://github.com/MahmoudEmad1491999/arabic-riscv-toolchain/blob/main/docs/roadmap.md" target="_blank" rel="noopener">Roadmap ↗</a><a href="https://github.com/MahmoudEmad1491999/arabic-riscv-toolchain/blob/main/docs/architecture.md" target="_blank" rel="noopener">Architecture notes ↗</a></div>
+              </div>
+              <div class="project-detail">
+                <div class="detail-title">Documented current state</div>
+                <ul>
+                  <li>Repository README marks the assembler and linker phases as complete for RV64IM.</li>
+                  <li>The Arabic assembler emits ELF relocatable objects; its output is compared against GNU <code>as</code>.</li>
+                  <li>The linker creates static executables and is checked against GNU <code>ld</code> behavior.</li>
+                  <li>Test workflows include QEMU execution, error tests, and differential fuzzing.</li>
+                  <li>The Ghora language and its compiler are under active development; the README says the compiler already builds real programs.</li>
+                </ul>
+                <div class="detail-title">Next on the roadmap</div>
+                <ul><li>Project-owned object format and separate compilation.</li><li>Further compiler and toolchain development, followed by the later roadmap stages.</li></ul>
+              </div>
+            </div>
+            <div class="project-note"><strong>Scope note:</strong> This is an evolving toolchain and language project. The portfolio does not describe it as self-hosting or as a completed compiler ecosystem.</div>
+          </article>
+
+          <article class="project">
+            <div class="project-top"><div class="project-num">PROJECT 02 / BARE-METAL FIRMWARE</div><span class="status">ACTIVE · EARLY STAGE</span></div>
+            <div class="project-body">
+              <div>
+                <h3>STM32F401 Black Pill Firmware</h3>
+                <p class="project-desc">A from-scratch bare-metal firmware foundation for the STM32F401CCU6 (Cortex-M4F). The focus is understanding the device from the reset vector upward: startup, memory layout, core control, and peripheral register definitions without relying on CMSIS or a vendor HAL.</p>
+                <div class="tags"><span class="tag">C11</span><span class="tag">STM32F401</span><span class="tag">ARM Cortex-M4F</span><span class="tag">ARM GNU Toolchain</span><span class="tag">CMake</span><span class="tag">Linker scripts</span><span class="tag">Inline assembly</span></div>
+                <div class="project-links"><a href="https://github.com/MahmoudEmad1491999/f401-blackpill-firmware" target="_blank" rel="noopener">Repository ↗</a><a href="https://github.com/MahmoudEmad1491999/f401-blackpill-firmware/blob/main/ROADMAP.md" target="_blank" rel="noopener">Roadmap ↗</a><a href="https://github.com/MahmoudEmad1491999/f401-blackpill-firmware/blob/main/.github/workflows/ci.yml" target="_blank" rel="noopener">CI workflow ↗</a></div>
+              </div>
+              <div class="project-detail">
+                <div class="detail-title">Implemented foundation</div>
+                <ul>
+                  <li>Cross-compiled CMake project using the ARM embedded toolchain and a freestanding build configuration.</li>
+                  <li>Hand-written linker script for the STM32F401CC memory map.</li>
+                  <li>Startup code with a 98-entry vector table, reset handler, <code>.data</code>/<code>.bss</code> initialization and weak default interrupt handlers.</li>
+                  <li>Core CPU helpers for interrupt control, barriers, low-power instructions and core-register access.</li>
+                  <li>Initial SCB, RCC and GPIO register definitions with compile-time layout checks.</li>
+                </ul>
+                <div class="detail-title">Next on the roadmap</div>
+                <ul><li>Peripheral drivers and host-side tests.</li><li>Renode boot verification and first GPIO integration test.</li><li>Serial, DMA, timers, buses and later kernel/bootloader work.</li></ul>
+              </div>
+            </div>
+            <div class="project-note"><strong>Scope note:</strong> The current description is deliberately limited to the bare-metal bring-up foundation. The repository roadmap still lists the first Renode boot test, peripheral drivers, scheduler and bootloader work as pending; those are not presented as completed features here.</div>
+          </article>
+
+          <article class="project">
+            <div class="project-top"><div class="project-num">PROJECT 03 / C LIBRARY</div><span class="status">ACTIVE · INCREMENTAL</span></div>
+            <div class="project-body">
+              <div>
+                <h3>libcdsa — C Data Structures & Algorithms</h3>
+                <p class="project-desc">A portable C11 library being built incrementally, with attention to explicit API contracts, allocation behavior, element ownership, error reporting, and verification. The current implementation is a foundation plus an initial dynamic-array module—not yet the full collection described by the long-term roadmap.</p>
+                <div class="tags"><span class="tag">Portable C11</span><span class="tag">CMake</span><span class="tag">API design</span><span class="tag">Memory ownership</span><span class="tag">ASan / UBSan</span><span class="tag">Valgrind</span><span class="tag">GCC / Clang CI</span></div>
+                <div class="project-links"><a href="https://github.com/MahmoudEmad1491999/libcdsa" target="_blank" rel="noopener">Repository ↗</a><a href="https://github.com/MahmoudEmad1491999/libcdsa/blob/main/ROADMAP.md" target="_blank" rel="noopener">Roadmap ↗</a><a href="https://github.com/MahmoudEmad1491999/libcdsa/blob/main/include/cdsa/cdsa_vec.h" target="_blank" rel="noopener">Vector API ↗</a></div>
+              </div>
+              <div class="project-detail">
+                <div class="detail-title">Implemented foundation</div>
+                <ul>
+                  <li>Common status/error codes and allocator hooks, including a failing-allocator test helper.</li>
+                  <li>Callback types for comparison, hashing, copying and cleanup, with default helpers.</li>
+                  <li>Opaque dynamic-array type with create/destroy, push/pop, get/set, insert/erase, reserve, shrink and clear operations.</li>
+                  <li>Documented element ownership and failure behavior in the vector API.</li>
+                  <li>CI matrix for GCC and Clang; checks include ASan/UBSan, Valgrind when available, cppcheck and clang-tidy when installed.</li>
+                </ul>
+                <div class="detail-title">Next on the roadmap</div>
+                <ul><li>Complete vector iteration and randomized differential testing.</li><li>Additional sequences, hashing structures, trees, heaps and algorithms.</li></ul>
+              </div>
+            </div>
+            <div class="project-note"><strong>Scope note:</strong> The current module set is intentionally small. The broader data-structure and algorithm catalogue is a roadmap, not an implemented feature list.</div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="experience">
+      <div class="wrap">
+        <div class="section-head">
+          <div><div class="section-kicker">04 / Professional experience</div><h2>Engineering in production</h2></div>
+          <p class="section-intro">Personal projects show how I explore and build; professional work gives me experience with software used in real automotive engineering programmes.</p>
+        </div>
+        <article class="experience">
+          <div>
+            <div class="experience-date">JUL 2023 — PRESENT</div>
+            <h3>Embedded Software Engineer</h3>
+            <div class="experience-org">Valeo · Cairo, Egypt</div>
+          </div>
+          <div>
+            <p>Working with automotive embedded software, with a focus on reusable verification assets and software behavior validation for AUTOSAR Basic Software components.</p>
+            <ul>
+              <li>Developing and maintaining reusable test packages for AUTOSAR BSW modules.</li>
+              <li>Using Python and test automation tools to support software verification and validation.</li>
+              <li>Working across automotive ECU platforms, debugging environments and communication technologies.</li>
+              <li>Collaborating with software, test and architecture stakeholders and producing verification evidence.</li>
+            </ul>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="contact">
+      <div class="wrap">
+        <div class="closing">
+          <div>
+            <div class="section-kicker">05 / Contact</div>
+            <h2>Let's talk embedded software.</h2>
+            <p>I'm interested in embedded software, firmware, system programming and low-level engineering opportunities—particularly with teams working in English and open to international candidates relocating to Germany.</p>
+          </div>
+          <div class="actions">
+            <a class="btn btn-primary" href="https://www.linkedin.com/in/memadeld/" target="_blank" rel="noopener">Connect on LinkedIn ↗</a>
+            <a class="btn" href="https://github.com/MahmoudEmad1491999" target="_blank" rel="noopener">GitHub ↗</a>
+          </div>
+        </div>
+        <p class="small-note" style="margin-top:14px">Languages: Arabic (native) · English (professional working proficiency) · German (currently learning; certification goal by the end of 2027).</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap footer-inner">
+      <span>© <span id="year">2026</span> Mahmoud Emad-Eldeen</span>
+      <div class="footer-links"><a href="https://github.com/MahmoudEmad1491999" target="_blank" rel="noopener">GitHub</a><a href="https://www.linkedin.com/in/memadeld/" target="_blank" rel="noopener">LinkedIn</a><a href="#top">Back to top ↑</a></div>
+    </div>
+  </footer>
+</body>
+</html>
